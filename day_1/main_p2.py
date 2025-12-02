@@ -17,17 +17,21 @@ with open(input_file, "r") as f:
         amount = int(line[1:].strip())
 
         if direction == 'L':
+            prev = current_value
             current_value = current_value - amount
-            while current_value < 0:
-                current_value = max_value - (current_value * -1) + 1
+            if prev != 0 and current_value <= 0:
+                password += 1
+
+            password += abs(current_value) // (max_value + 1)
+            if current_value < 0:
+                current_value = current_value % (max_value + 1)
 
         if direction == 'R':
             current_value = current_value + amount
-            while current_value > max_value:
-                current_value = current_value - max_value - 1
+            password += current_value // (max_value + 1)
+            if current_value > max_value:
+                current_value = current_value % (max_value + 1)
 
-        if current_value == 0:
-            password += 1
 
 print(f"Password: {password}")
 
